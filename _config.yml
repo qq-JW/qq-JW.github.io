@@ -1,11 +1,11 @@
 # Basic
-title: 潘柏信
+title: 青年晚报报报长
 subtitle: 个人站
 description: 欢迎来到我的个人站~
 # 头像里面的标题
 avatarTitle: leopardpan
 # 头像里面的描述
-avatarDesc: iOS / 机器学习
+avatarDesc: 学习
 url: "https://leopardpan.cn"
 
 # 博客是否自动生成目录，false为不生成
@@ -72,7 +72,7 @@ nav:
     
 
 # Pagination
-gems: [jekyll-paginate,jekyll-sitemap]
+gems: [jekyll-paginate]
 paginate: 20
 paginate_path: "page/:num/"
 
