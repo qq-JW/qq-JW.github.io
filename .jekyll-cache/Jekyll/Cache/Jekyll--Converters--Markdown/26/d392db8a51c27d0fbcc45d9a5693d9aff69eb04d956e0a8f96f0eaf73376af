@@ -1,0 +1,9 @@
+I"�<h1 id="我的第一篇博客">我的第一篇博客</h1>
+<h2 id="整车的网络拓扑图指的是采用网状拓扑结构把整车所有需要can网络交互的ecu连接在一起的拓扑图通过拓扑图我们可以清晰地看出整车can网络的结构每个ecu在can网络中的分布以及其他ecu与他的信号交互关系">整车的网络拓扑图，指的是采用网状拓扑结构把整车所有需要CAN网络交互的ECU连接在一起的拓扑图。通过拓扑图，我们可以清晰地看出整车CAN网络的结构，每个ECU在CAN网络中的分布，以及其他ECU与他的信号交互关系。</h2>
+<h3 id="整车can网络中的ecu按功能类别和波特率大小等条件被分为五条can总线">整车CAN网络中的ECU按功能类别和波特率大小等条件被分为五条CAN总线：</h3>
+<h4 id="a-ptcanpowertrain-can又叫动力can由于涉及到车辆动力有关的ecu安全级别及优先级都为最高其需求的can总线传输速率也就最快主要分布的ecu有emsbmssrscduvcuavastcu">a)	PTCAN（Powertrain CAN）又叫动力CAN，由于涉及到车辆动力有关的ECU，安全级别及优先级都为最高，其需求的CAN总线传输速率也就最快，主要分布的ECU有：EMS，BMS，SRS，CDU，VCU，AVAS，TCU</h4>
+<h4 id="b-chcan又叫底盘can涉及汽车底盘和转向稳定相关的ecu例如espepslcapdcaccldwaeb">b)	CHCAN，又叫底盘CAN涉及汽车底盘和转向稳定相关的ECU，例如：ESP，EPS，LCA，PDC，ACC/LDW/AEB</h4>
+<h4 id="c-bdcan车身canbcmhvacatcacrfpepsplg">c)	BDCAN，车身CAN，BCM，HVAC（ATC/AC），RF，PEPS，PLG，</h4>
+<h4 id="d-infocan娱乐canipkficmhud">d)	INFOCAN，娱乐CAN，IPK，FICM，HUD</h4>
+<h4 id="e-diagcan诊断cantbox">e)	DIAGCAN，诊断CAN，Tbox</h4>
+:ET
