@@ -1,0 +1,16 @@
+I"r<h1 id="实车sot评审">实车SOT评审</h1>
+
+<p>为了在耐久耐候等测试中保证实车上的软件为最新的版本，需要实施实车软件版本管控，即SOT评审，具体流程为：</p>
+
+<p><img src="file:///C:/Users/鲁兵/AppData/Local/Temp/msohtmlclip1/01/clip_image002.jpg" alt="img" /></p>
+
+<p>\1.     根据网络拓扑图、BOM、PPPR（车辆需求计划）、VDS（车辆定义表）确定实际需要评审的车辆配置，涉及评审的ECU，最终得到所有需要进行版本管控的ECU的诊断ID。</p>
+
+<p><img src="file:///C:/Users/鲁兵/AppData/Local/Temp/msohtmlclip1/01/clip_image004.jpg" alt="img" /></p>
+
+<p>\2.     根据每个ECU的诊断ID，使用CANOE读取F187（零件号）/F191（软件版本号）/F1A0（硬件版本号）后，与版本记录表中的版本号进行比对，查看实车上的是否为最新版本。</p>
+
+<p>\3.     筛选出不符合要求的ECU，通知DRE尽快反馈原因或对实车上的软件进行刷写，保证后续测试的可靠性。</p>
+
+<p><img src="file:///C:/Users/鲁兵/AppData/Local/Temp/msohtmlclip1/01/clip_image006.jpg" alt="img" /></p>
+:ET

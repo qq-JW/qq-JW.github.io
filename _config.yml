@@ -9,7 +9,7 @@ avatarDesc: ML/计算机视觉/整车CAN
 url: "https://www.forbetterfuture.xyz"
 
 # 博客是否自动生成目录，false为不生成
-enableToc: true
+enableToc: flase
 
 ## Comment
 #comment:
