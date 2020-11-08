@@ -5,7 +5,7 @@ description: 欢迎来到我的个人站~
 # 头像里面的标题
 avatarTitle: qqxsoldier
 # 头像里面的描述
-avatarDesc: ML/计算机视觉/整车CAN
+avatarDesc: HIL/ML/车身电子
 url: "https://www.forbetterfuture.xyz"
 
 # 博客是否自动生成目录，false为不生成
@@ -25,7 +25,7 @@ social:
     # juejin: xxx
     # jianshu: 2ada30d8d0f7
     # twitter: 
-    mail: shang0070072008@icloud.com
+    mail: shang0070072008@126.com
 
 
 # 百度统计 
