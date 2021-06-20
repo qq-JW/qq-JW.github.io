@@ -5,11 +5,11 @@ description: 欢迎来到我的个人站~
 # 头像里面的标题
 avatarTitle: qqxsoldier
 # 头像里面的描述
-avatarDesc: HIL/ML/车身电子
+avatarDesc: HIL/ADAS/ML
 url: "https://www.forbetterfuture.xyz"
 
 # 博客是否自动生成目录，false为不生成
-enableToc: flase
+enableToc: false
 
 ## Comment
 #comment:
@@ -19,8 +19,8 @@ enableToc: flase
 
 # Social
 social:
-    weibo: 2095117925
-    github: qq-JW
+    # weibo: 2095117925
+    # github: qq-JW
     # zhihu: panpanleopard
     # juejin: xxx
     # jianshu: 2ada30d8d0f7
@@ -67,13 +67,11 @@ blog_button:
 nav:
     - {title: 所有文章, description: archive, url: '/archive'}   
     - {title: 标签, description: tags, url: '/tags'}      
-    - {title: 技术支持, description: support, url: '/support'}      
+   # - {title: 技术支持, description: support, url: '/support'}
     - {title: 关于我, description: about, url: '/about'}   
     
 
 # Pagination
-gems: [jekyll-paginate]
+gems: [jekyll-paginate,jekyll-sitemap]
 paginate: 20
 paginate_path: "page/:num/"
-
-
