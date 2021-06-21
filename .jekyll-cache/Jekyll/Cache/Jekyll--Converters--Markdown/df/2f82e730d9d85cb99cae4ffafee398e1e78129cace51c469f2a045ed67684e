@@ -1,0 +1,864 @@
+I"��<h1 id="车身子系统">车身子系统</h1>
+
+<h2 id="escl">ESCL</h2>
+
+<p>以下防盗技术三选二
+ESCL
+P档锁
+发动机防盗</p>
+
+<h3 id="escl基本功能">ESCL基本功能</h3>
+
+<ul>
+  <li>
+    <p>解锁</p>
+
+    <ul>
+      <li>
+        <p>ESCL处理</p>
+
+        <ul>
+          <li>
+            <p>a.	ESCL_LockStatus不是UNLock</p>
+
+            <ul>
+              <li>
+                <p>a.	ESCL收到iBDU的解锁请求并认证成功</p>
+
+                <ul>
+                  <li>a. ESCL执行解锁解锁成功发送网络信号ESCL_release=Successed&amp; ESCL_LockStatus=Unlock，</li>
+                  <li>b. ESCL执行解锁解锁失败发送ESCL_Warning_to_IPK= ESCL_Unlock_Failure_Warning；(详细看7.3.2章)</li>
+                  <li>c. ESCL执行解锁解锁过程中ESCL的锁状态发送实际状态ESCL_LockStatus= （0:latch processing；或1:Locked）</li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <p>IBDU处理</p>
+
+        <ul>
+          <li>
+            <p>ESCL_Learning_Status=0x1:Learnt</p>
+
+            <ul>
+              <li>a.	在电源模式为OFF且非远程启动状态下（电源模式为A状态下），按下启动开关，找到合法钥匙，iBDU向ESCL发送ESCL解锁请求</li>
+              <li>b.	在电源模式为OFF且在远程启动状态下（电源模式为U状态下），踩下刹车，按下启动开关，找到合法钥匙iBDU向ESCL发送ESCL解锁请求</li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p>闭锁</p>
+
+    <ul>
+      <li>
+        <p>IBDU处理</p>
+
+        <ul>
+          <li>a.	SystemPowerModeValidity=Valid &amp;SystemPowerMode=OFF</li>
+          <li>b.	Engine Speed &lt;K_ESCL_Lock_Engine_Speed_Limit,</li>
+          <li>c.	Engine Speed Status is valid,</li>
+          <li>d.	ESCL 不是Lock状态</li>
+        </ul>
+      </li>
+      <li>
+        <p>ESCL处理</p>
+
+        <ul>
+          <li>a.	SystemPowerModeValidity=Valid &amp;SystemPowerMode=OFF</li>
+          <li>b.	VehicleSpeedStatus=Valid&amp;VehicleSpeed≤2km/h&amp;车速硬线信号≤2km/h</li>
+          <li>c.	Engine Speed &lt;K_ESCL_Lock_Engine_Speed_Limit,</li>
+          <li>Engine Speed Status is valid,</li>
+          <li>d.	ESCL Voltage &gt; K_Minimum_Voltage_Threshold, AND</li>
+          <li>ESCL_Voltage &lt; K_Maximum_Voltage_Threshold, THEN</li>
+          <li>e.	K15电位为低电平</li>
+          <li>f.	PropulsionSystemActive=false</li>
+          <li>g.	EngineRunActive=false</li>
+          <li>h.	ESCL 解锁状态</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<h4 id="exteriorlight">EXTERIORLIGHT</h4>
+
+<h5 id="位置灯">位置灯</h5>
+
+<ul>
+  <li>
+    <p>功能框图</p>
+
+    <ul>
+      <li></li>
+    </ul>
+  </li>
+  <li>
+    <p>位置灯基本功能</p>
+
+    <ul>
+      <li>
+        <p>位置灯打开</p>
+
+        <ul>
+          <li>a.解防状态</li>
+          <li>b.任意状态</li>
+        </ul>
+      </li>
+      <li>
+        <p>位置灯关闭</p>
+
+        <ul>
+          <li>a.位置灯开关输入无效</li>
+          <li>b.当DPosLampOn = 1时，车辆防盗状态变为非解防状态。（如果因伴我回家功能点亮位置灯，位置灯需要保持到伴我回家功能结束）</li>
+          <li>c.当DPosLampOn = 1时，SystemPowerMode = OFF且解防状态下，计时KPosLampClsTm时间到</li>
+        </ul>
+      </li>
+      <li>
+        <p>远程启动点亮位置灯</p>
+
+        <ul>
+          <li>
+            <p>iBDU的远程控制系统发送远程启动指令内部信号RemoteVehicleStartStatus=Active</p>
+
+            <ul>
+              <li>a.	打开前后位置灯、牌照灯输出</li>
+              <li>b.	‎网络信号PositionLampStatus发送的值为位置灯实际输出状态信号</li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <p>远程启动熄灭位置灯</p>
+
+        <ul>
+          <li>
+            <p>iBDU的远程控制系统发送远程启动指令内部信号RemoteVehicleStartStatus=INActive</p>
+
+            <ul>
+              <li>a.	打开前后位置灯、牌照灯输出</li>
+              <li>b.	‎网络信号PositionLampStatus发送的值为位置灯实际输出状态信号</li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p>位置灯未关提醒</p>
+
+    <ul>
+      <li>
+        <p>位置灯未关提醒打开</p>
+
+        <ul>
+          <li>a.SystemPowerMode = OFF或Acc</li>
+          <li>b.	‎位置灯输出有效（仅限于位置灯/自动位置灯/近光灯/自动近光灯功能打开的位置灯）</li>
+        </ul>
+      </li>
+      <li>
+        <p>位置灯未关提醒关闭</p>
+
+        <ul>
+          <li>a.主驾门开关状态变为关闭</li>
+          <li>b.	‎位置灯输出无效</li>
+          <li>c.	‎电源模式SystemPowerMode != OFF且!= ACC</li>
+          <li>d.	‎KPosLampNotClsAlmTm计时到</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p>测试用例</p>
+
+    <ul>
+      <li>
+        <p>点亮</p>
+
+        <ul>
+          <li>
+            <p>位置灯强制熄灭配置有效</p>
+
+            <ul>
+              <li>
+                <p>OFF</p>
+
+                <ul>
+                  <li>
+                    <p>电源状态Off，车辆解防状态，位置灯开关有效，位置灯点亮</p>
+
+                    <ul>
+                      <li>
+                        <p>HIL_POWER_ON</p>
+                      </li>
+                      <li>
+                        <p>PDU_ON</p>
+                      </li>
+                      <li>
+                        <p>CANOE写配置字</p>
+
+                        <ul>
+                          <li>1002 进入扩展会话</li>
+                          <li>2701 通过一级安全验证</li>
+                          <li>2E C1 06 配置位置灯强制熄灭</li>
+                        </ul>
+                      </li>
+                      <li>
+                        <p>判断SystempowerMode==2和SystemPowerMode Validity=0</p>
+                      </li>
+                      <li>
+                        <p>PDU_OFF</p>
+                      </li>
+                      <li>
+                        <p>车辆解防</p>
+
+                        <ul>
+                          <li>
+                            <p>设防状态信号：CTDStatus</p>
+
+                            <ul>
+                              <li>5: Invalid</li>
+                              <li>4:SecurityAlarmTriggered</li>
+                              <li>3: Partiallyarm</li>
+                              <li>2: Fullarm</li>
+                              <li>1:  Prearm</li>
+                              <li>0: Disarm</li>
+                            </ul>
+                          </li>
+                        </ul>
+                      </li>
+                      <li>
+                        <p>判断SystempowerMode==0和SystemPowerMode Validity=0</p>
+                      </li>
+                      <li>
+                        <p>硬线点亮位置灯</p>
+
+                        <ul>
+                          <li>Position Lamp_ON</li>
+                        </ul>
+                      </li>
+                      <li>
+                        <p>判断PositionLampStatus==1（CAN信号判断：打开信号是否传输到IPK）和PositionLampStatus_HW==1(硬线判断：位置灯是否打开)</p>
+                      </li>
+                      <li>
+                        <p>Canoe_stop</p>
+                      </li>
+                      <li>
+                        <p>PDU_OFF</p>
+                      </li>
+                      <li>
+                        <p>判断SystempowerMode==0和SystemPowerMode Validity=0</p>
+
+                        <p>多次检查电源状态和电源模式有效性信号原因：测试用例的完整性，可复用性</p>
+                      </li>
+                      <li>
+                        <p>HIL_POWER_OFF</p>
+                      </li>
+                    </ul>
+                  </li>
+                  <li>
+                    <p>电源状态Off，车辆解防状态，近光灯开关有效，位置灯点亮</p>
+
+                    <ul>
+                      <li>HIL_POWER_ON</li>
+                      <li>PDU_ON</li>
+                      <li>
+                        <p>CANOE写配置字</p>
+
+                        <ul>
+                          <li>1002 进入扩展会话</li>
+                          <li>2701 通过一级安全验证</li>
+                          <li>2E C1 06 配置位置灯强制熄灭</li>
+                        </ul>
+                      </li>
+                      <li>判断PWM和PWMV</li>
+                      <li>PDU_OFF</li>
+                      <li>判断PWM和PWMV</li>
+                      <li>车辆解防CTD</li>
+                      <li>硬线点亮近光灯</li>
+                      <li>
+                        <p>判断近光灯状态</p>
+
+                        <ul>
+                          <li>DippedBeamStatus==1</li>
+                        </ul>
+                      </li>
+                      <li>判断位置灯状态</li>
+                      <li>硬线关闭近光灯</li>
+                      <li>PDU_OFF</li>
+                      <li>判断PWM和PWMV</li>
+                      <li>HIL_POWER_OFF</li>
+                    </ul>
+                  </li>
+                  <li>
+                    <p>电源状态Off，车辆解防状态，灯光组合开关处于自动灯光档，RLS请求点亮位置灯，位置灯不点亮</p>
+
+                    <p>RLS请求点亮位置灯，</p>
+
+                    <ul>
+                      <li>
+                        <p>HIL_POWER_ON</p>
+                      </li>
+                      <li>
+                        <p>PDU_ON</p>
+                      </li>
+                      <li>
+                        <p>CANOE写配置字</p>
+
+                        <ul>
+                          <li>1002 进入扩展会话</li>
+                          <li>2701 通过一级安全验证</li>
+                          <li>2E C1 06 配置位置灯强制熄灭</li>
+                        </ul>
+                      </li>
+                      <li>
+                        <p>判断SystempowerMode==2和SystemPowerMode Validity=0</p>
+                      </li>
+                      <li>
+                        <p>PDU_OFF</p>
+                      </li>
+                      <li>
+                        <p>车辆解防</p>
+
+                        <ul>
+                          <li>
+                            <p>设防状态信号：CTDStatus</p>
+
+                            <ul>
+                              <li>5: Invalid</li>
+                              <li>4:SecurityAlarmTriggered</li>
+                              <li>3: Partiallyarm</li>
+                              <li>2: Fullarm</li>
+                              <li>1:  Prearm</li>
+                              <li>0: Disarm</li>
+                            </ul>
+                          </li>
+                        </ul>
+                      </li>
+                      <li>
+                        <p>判断SystempowerMode==0和SystemPowerMode Validity=0</p>
+                      </li>
+                      <li>
+                        <p>自动灯光打开</p>
+
+                        <p>if Lightautocontrol ==0:
+	combilamp_control=1
+	time.sleep(0.5)
+	combilamp_control=3
+	time.sleep(1)</p>
+
+                        <ul>
+                          <li>Light auto control：自动灯光状态CAN信号</li>
+                        </ul>
+                      </li>
+                      <li>
+                        <p>RLS请求位置灯打开</p>
+
+                        <ul>
+                          <li>LIN_Position_Lamps_On：RLS的自动位置灯LIN请求</li>
+                        </ul>
+                      </li>
+                      <li>
+                        <p>判断自动灯光状态</p>
+
+                        <p>read(LightAutoControl) ==1
+LightAutoControl：ON（1）/OFF （0）</p>
+
+                        <ul>
+                          <li>Light auto control：自动灯光状态CAN信号</li>
+                        </ul>
+                      </li>
+                      <li>
+                        <p>Read(AutoLightOnrequest)==0</p>
+
+                        <p>AutoLightOnrequest：0/1	False/True</p>
+
+                        <ul>
+                          <li>AutoLightOnrequest：自动灯光点亮CAN请求</li>
+                        </ul>
+                      </li>
+                      <li>
+                        <p>判断PositionLampStatus==0（CAN信号判断：关闭信号是否传输到IPK）和PositionLampStatus_HW==0(硬线判断：位置灯是否关闭)</p>
+                      </li>
+                      <li>
+                        <p>RLS请求位置灯关闭</p>
+
+                        <ul>
+                          <li>LIN_Position_Lamps_On：RLS的自动位置灯LIN请求</li>
+                        </ul>
+                      </li>
+                      <li>
+                        <p>自动灯光关闭</p>
+
+                        <p>if Lightautocontrol ==0:
+	combilamp_control=1
+	time.sleep(0.5)
+	combilamp_control=0
+	time.sleep(1)</p>
+                      </li>
+                      <li>
+                        <p>PDU_OFF</p>
+                      </li>
+                      <li>
+                        <p>判断SystempowerMode==0和SystemPowerMode Validity=0</p>
+                      </li>
+                      <li>
+                        <p>HIL_POWER_OFF</p>
+                      </li>
+                    </ul>
+                  </li>
+                  <li>
+                    <p>电源状态Off，车辆解防状态，灯光组合开关处于自动灯光档，RLS请求点亮近光灯，位置灯不点亮</p>
+
+                    <ul>
+                      <li>同第二条</li>
+                    </ul>
+                  </li>
+                  <li>
+                    <p>电源状态Off，位置灯开关有效，位置灯点亮，切换车辆预设防状态，位置灯熄灭</p>
+                  </li>
+                  <li>
+                    <p>电源状态Off，位置灯开关有效，位置灯点亮，切换车辆设防状态，位置灯熄灭</p>
+                  </li>
+                  <li>
+                    <p>电源状态Off，位置灯开关有效，位置灯点亮，切换车辆部分设防状态，位置灯熄灭</p>
+                  </li>
+                  <li>
+                    <p>电源状态Off，车辆预设防状态，位置灯开关有效，位置灯不点亮，切换车辆为解防状态，位置灯自动点亮</p>
+                  </li>
+                  <li>
+                    <p>电源状态Off，车辆设防状态，位置灯开关有效，位置灯不点亮，切换车辆为解防状态，位置灯自动点亮</p>
+                  </li>
+                  <li>
+                    <p>电源状态Off，车辆部分设防状态，位置灯开关有效，位置灯不点亮，切换车辆为解防状态，位置灯自动点亮</p>
+                  </li>
+                  <li>
+                    <p>位置灯强制熄灭配置有效，断开蓄电池后重新连接，电源状态Off，位置灯开关有效，位置灯点亮，切换车辆部分设防状态，位置灯熄灭</p>
+                  </li>
+                </ul>
+              </li>
+              <li>
+                <p>ACC</p>
+
+                <ul>
+                  <li>电源状态Acc，车辆解防状态，位置灯开关有效，位置灯点亮</li>
+                  <li>电源状态Acc，车辆解防状态，灯光组合开关处于自动灯光档，RLS请求点亮位置灯，位置灯不点亮</li>
+                  <li>电源状态Acc，车辆解防状态，近光灯开关有效，位置灯点亮</li>
+                  <li>电源状态Acc，车辆解防状态，灯光组合开关处于自动灯光档，RLS请求点亮近光灯，位置灯不点亮</li>
+                </ul>
+              </li>
+              <li>
+                <p>CRACK</p>
+
+                <ul>
+                  <li>电源状态Crank，车辆解防状态，位置灯开关有效，位置灯点亮</li>
+                  <li>电源状态Crank，车辆解防状态，灯光组合开关处于自动灯光档，RLS请求点亮位置灯，位置灯不点亮</li>
+                  <li>电源状态Crank，车辆解防状态，近光灯开关有效，位置灯点亮</li>
+                  <li>电源状态Crank，车辆解防状态，灯光组合开关处于自动灯光档，RLS请求点亮近光灯，位置灯不点亮</li>
+                </ul>
+              </li>
+              <li>
+                <p>ON</p>
+
+                <ul>
+                  <li>电源状态Run，车辆解防状态，位置灯开关有效，位置灯点亮</li>
+                  <li>电源状态Run，车辆解防状态，灯光组合开关处于自动灯光档，RLS请求点亮位置灯，位置灯点亮</li>
+                  <li>电源状态Run，车辆解防状态，近光灯开关有效，位置灯点亮</li>
+                  <li>电源状态Run，车辆解防状态，灯光组合开关处于自动灯光档，RLS请求点亮近光灯，位置灯点亮</li>
+                  <li>电源状态Run，车辆解防状态，灯光组合开关处于自动灯光档，RLS同时请求点亮位置灯、近光灯，位置灯点亮</li>
+                  <li>电源状态Run，车辆解防状态，灯光组合开关处于自动灯光档，RLS无请求，位置灯不点亮</li>
+                  <li>电源状态Run，车辆解防状态，位置灯开关有效，位置灯点亮，切换电源状态至Off，位置灯保持点亮，无闪烁</li>
+                  <li>电源状态Run，车辆解防状态，位置灯开关有效，位置灯点亮，切换电源状态至Acc，位置灯保持点亮，无闪烁</li>
+                  <li>电源状态Run，车辆解防状态，位置灯开关有效，位置灯点亮，切换电源状态至Crank，位置灯保持点亮，无闪烁</li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+          <li>
+            <p>位置灯强制熄灭配置无效</p>
+
+            <ul>
+              <li>电源状态Off，车辆解防状态，位置灯开关有效，位置灯点亮</li>
+              <li>电源状态Off，车辆解防状态，灯光组合开关处于自动灯光档，RLS请求点亮位置灯，位置灯不点亮</li>
+              <li>电源状态Off，车辆解防状态，近光灯开关有效，位置灯点亮</li>
+              <li>电源状态Off，车辆解防状态，灯光组合开关处于自动灯光档，RLS请求点亮近光灯，位置灯不点亮</li>
+              <li>电源状态Acc，车辆解防状态，位置灯开关有效，位置灯点亮</li>
+              <li>电源状态Acc，车辆解防状态，灯光组合开关处于自动灯光档，RLS请求点亮位置灯，位置灯不点亮</li>
+              <li>电源状态Acc，车辆解防状态，近光灯开关有效，位置灯点亮</li>
+              <li>电源状态Acc，车辆解防状态，灯光组合开关处于自动灯光档，RLS请求点亮近光灯，位置灯不点亮</li>
+              <li>电源状态Run，车辆解防状态，位置灯开关有效，位置灯点亮</li>
+              <li>电源状态Run，车辆解防状态，灯光组合开关处于自动灯光档，RLS请求点亮位置灯，位置灯点亮</li>
+              <li>电源状态Run，车辆解防状态，近光灯开关有效，位置灯点亮</li>
+              <li>电源状态Run，车辆解防状态，灯光组合开关处于自动灯光档，RLS请求点亮近光灯，位置灯点亮</li>
+              <li>电源状态Run，车辆解防状态，灯光组合开关处于自动灯光档，RLS同时请求点亮位置灯、近光灯，位置灯点亮</li>
+              <li>电源状态Run，车辆解防状态，灯光组合开关处于自动灯光档，RLS无请求，位置灯不点亮</li>
+              <li>电源状态Run，车辆解防状态，位置灯开关有效，位置灯点亮，切换电源状态至Off，位置灯保持点亮，无闪烁</li>
+              <li>电源状态Run，车辆解防状态，位置灯开关有效，位置灯点亮，切换电源状态至Acc，位置灯保持点亮，无闪烁</li>
+              <li>电源状态Run，车辆解防状态，位置灯开关有效，位置灯点亮，切换电源状态至Crank，位置灯保持点亮，无闪烁</li>
+              <li>电源状态Off，位置灯开关有效，位置灯点亮，切换车辆预设防状态，位置灯保持点亮</li>
+              <li>电源状态Off，位置灯开关有效，位置灯点亮，切换车辆设防状态，位置灯保持点亮</li>
+              <li>电源状态Off，位置灯开关有效，位置灯点亮，切换车辆部分设防状态，位置灯保持点亮</li>
+              <li>电源状态Off，车辆预设防状态，位置灯开关有效，位置灯点亮，切换车辆为解防状态，位置灯保持点亮</li>
+              <li>位置灯强制熄灭无效，电源状态Off，位置灯开关有效，位置灯点亮，断开蓄电池后重新连接，切换车辆设防状态，位置灯保持点亮</li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <p>熄灭</p>
+
+        <ul>
+          <li>
+            <p>位置灯强制熄灭配置有效</p>
+
+            <ul>
+              <li>电源状态Off，车辆解防状态，位置灯开关有效，位置灯点亮，车辆状态从解防切换至预设防状态，位置灯熄灭</li>
+              <li>电源状态Off，车辆解防状态，位置灯开关有效，位置灯点亮，车辆状态从解防切换至部分设防状态，位置灯熄灭</li>
+              <li>电源状态Off，车辆解防状态，位置灯开关有效，位置灯点亮，切换位置灯开关无效，位置灯熄灭</li>
+              <li>电源状态Off，车辆解防状态，近光灯开关有效，位置灯点亮，近光灯开关无效，位置灯熄灭</li>
+              <li>电源状态Off，车辆解防状态，位置灯开关有效，位置灯点亮，位置灯点亮15min超时后，位置灯熄灭</li>
+            </ul>
+          </li>
+          <li>
+            <p>位置灯强制熄灭配置无效</p>
+
+            <ul>
+              <li>电源状态Off，车辆解防状态，位置灯开关有效，位置灯点亮，切换位置灯开关无效，位置灯熄灭</li>
+              <li>电源状态Off，车辆解防状态，近光灯开关有效，位置灯点亮，近光灯开关无效，位置灯熄灭</li>
+              <li>电源状态Off，车辆解防状态，位置灯开关有效，位置灯点亮，位置灯点亮15min超时后，位置灯不熄灭</li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <p>位置灯未关提醒</p>
+
+        <ul>
+          <li>电源状态Off，主驾车门关闭状态，位置灯开关有效，位置灯点亮，打开主驾车门，位置灯未关提醒触发</li>
+          <li>电源状态Acc，主驾车门关闭状态，位置灯开关有效，位置灯点亮，打开主驾车门，位置灯未关提醒触发</li>
+          <li>电源状态Run，主驾车门关闭状态，位置灯开关有效，位置灯点亮，打开主驾车门，位置灯未关提醒未触发</li>
+          <li>电源状态Off，主驾车门关闭状态，位置灯开关无效，位置灯熄灭状态，打开主驾车门，位置灯未关提醒未触发</li>
+          <li>电源状态Off，各车门及前舱盖关闭状态，位置灯开关有效，位置灯点亮，打开副驾车门，位置灯未关提醒未触发</li>
+          <li>电源状态Off，各车门及前舱盖关闭状态，位置灯开关有效，位置灯点亮，打开左后车门，位置灯未关提醒未触发</li>
+          <li>电源状态Off，各车门及前舱盖关闭状态，位置灯开关有效，位置灯点亮，打开右后门，位置灯未关提醒未触发</li>
+        </ul>
+      </li>
+      <li>
+        <p>位置灯未关提醒退出</p>
+
+        <ul>
+          <li>电源状态Off，主驾车门关闭状态，位置灯开关有效，位置灯点亮，打开主驾车门，位置灯未关提醒触发，再次关闭主驾车门，提醒关闭</li>
+          <li>电源状态Off，主驾车门关闭状态，位置灯开关有效，位置灯点亮，打开主驾车门，位置灯未关提醒触发，切换位置灯开关无效，提醒关闭</li>
+          <li>电源状态Off，主驾车门关闭状态，近光灯开关有效，位置灯点亮，打开主驾车门，位置灯未关提醒触发，切换近光灯开关无效，提醒关闭</li>
+          <li>电源状态Off，主驾车门关闭状态，位置灯开关有效，位置灯点亮，打开主驾车门，位置灯未关提醒触发，切换电源状态至Acc，提醒关闭</li>
+          <li>电源状态Off，主驾车门关闭状态，位置灯开关有效，位置灯点亮，打开主驾车门，位置灯未关提醒触发，切换电源状态至Run，提醒关闭</li>
+          <li>电源状态Off，主驾车门关闭状态，位置灯开关有效，位置灯点亮，打开主驾车门，位置灯未关提醒触发，切换电源状态至Crank，提醒关闭</li>
+          <li>电源状态Off，主驾车门关闭状态，位置灯开关有效，位置灯点亮，打开主驾车门，位置灯未关提醒触发，等待触发1min计时超时，提醒关闭</li>
+          <li>电源状态Off，主驾车门关闭状态，位置灯开关有效，位置灯点亮，打开主驾车门，位置灯未关提醒触发，等待触发1min计时超时，提醒关闭，关闭主驾车门后再次打开，提醒再次触发，再次等待1min后，提醒关闭</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<h5 id="近光灯">近光灯</h5>
+
+<ul>
+  <li>
+    <p>功能框图</p>
+
+    <ul>
+      <li>子主题 1</li>
+    </ul>
+  </li>
+  <li>
+    <p>近光灯基本功能</p>
+
+    <ul>
+      <li>
+        <p>近光灯打开</p>
+
+        <ul>
+          <li>为什么run档下，车辆解防，自动灯光下，RLS请求点亮近光灯，位置灯不亮近光灯亮？（需求变化）</li>
+        </ul>
+      </li>
+      <li>
+        <p>近光灯关闭</p>
+      </li>
+    </ul>
+  </li>
+  <li>近光灯功能安全</li>
+  <li>共同信号-车速处理</li>
+  <li>近光灯负载保护</li>
+  <li>近光灯电压异常处理</li>
+</ul>
+
+<h5 id="远光灯">远光灯</h5>
+
+<ul>
+  <li>
+    <p>远光灯近光灯互斥</p>
+
+    <p>DMainBeamOutputTypeCfg远近光灯控制类型：
+0x0：远近光灯互斥
+‎0x1：单光源，挡板控制远近光灯
+‎0x2：双光源，远近光灯单独控制
+‎0x3：Reserve</p>
+  </li>
+  <li>
+    <p>单光源挡板控制</p>
+
+    <ul>
+      <li>
+        <p>单光源挡板打开，远光灯打开</p>
+
+        <ul>
+          <li>
+            <p>a.SystemPowerMode = Run
+b.‎近光灯点亮</p>
+
+            <ul>
+              <li>
+                <p>a.	远光灯开关有效</p>
+
+                <ul>
+                  <li>a.打开近光灯同时打开远光灯输出
+‎b.网络上发送远光灯、近光灯实际输出状态</li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <p>单光源挡板关闭，远光灯关闭</p>
+
+        <ul>
+          <li>a.SystemPowerMode !=RUN
+b.近光灯熄灭
+c.远光灯开关无效</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p>a.立即熄灭远光灯</p>
+
+<p>b.网络上发送远光灯实际输出状态</p>
+
+<ul>
+  <li>
+    <p>双光源、远光灯近光灯单独控制</p>
+
+    <ul>
+      <li>双光源，单独控制远光灯打开</li>
+      <li>双光源，单独控制远光灯关闭</li>
+    </ul>
+  </li>
+  <li>远光灯功能安全</li>
+  <li>远光灯负载保护</li>
+  <li>远光灯电压异常处理</li>
+</ul>
+
+<h5 id="自动灯">自动灯</h5>
+
+<ul>
+  <li>自动灯开关档位逻辑</li>
+  <li>自动灯使能</li>
+  <li>位置灯自动点亮</li>
+  <li>近光灯自动点亮</li>
+  <li>自动灯故障处理</li>
+  <li>自动灯电压异常处理</li>
+  <li>
+    <p>TIPS</p>
+
+    <ul>
+      <li>从位置灯档或近光灯档至OFF档，这意味着开关旋转很快，AUTO档的滤波时间没有满足，认为没有经过AUTO档。该情况下，进入OFF状态，回位到AUTO档后，依旧保持OFF状态</li>
+    </ul>
+  </li>
+</ul>
+
+<h5 id="超车灯">超车灯</h5>
+
+<ul>
+  <li>超车灯基本功能</li>
+  <li>超车灯负载保护</li>
+  <li>超车灯电压异常处理</li>
+</ul>
+
+<h5 id="转向灯">转向灯</h5>
+
+<ul>
+  <li>转向灯基本功能</li>
+  <li>变道灯功能</li>
+  <li>危险报警灯功能</li>
+  <li>碰撞危险报警灯功能</li>
+  <li>转向灯指示功能</li>
+  <li>转向灯功能优先级</li>
+  <li>转向灯故障处理</li>
+  <li>转向灯功能安全</li>
+  <li>转向灯电压异常处理</li>
+  <li>转向辅助灯（角灯）</li>
+</ul>
+
+<h5 id="伴我回家">伴我回家</h5>
+
+<ul>
+  <li>伴我回家功能</li>
+</ul>
+
+<h5 id="雾灯">雾灯</h5>
+
+<ul>
+  <li>
+    <p>问题：
+1.前后雾灯需要配置字？为什么脚本中没体现
+2.系统框图怎么看，怎么模拟？
+3.雾灯与近光灯的关系？
+4.雾灯为何只在RUN档可用？
+5.如果配置为有前雾灯，是否近光灯和自动灯光就不会控制后雾灯？</p>
+
+    <ul>
+      <li>4785法规</li>
+    </ul>
+  </li>
+  <li>
+    <p>解答：
+法规要求，后雾灯必装，前雾灯选装
+后雾灯不可单独点亮，规定只有当远光灯、近光灯或前雾灯打开时，后雾灯才能打开。
+所以，根据配置字，前雾灯配置为有时，前雾灯打开与否会影响后雾灯状态；前雾灯配置为无时，需近光灯打开才可打开后雾灯。（同时也会自动点亮位置灯）</p>
+  </li>
+</ul>
+
+<h5 id="倒车灯">倒车灯</h5>
+
+<ul>
+  <li>倒车灯基本功能</li>
+  <li>倒车灯负载保护</li>
+  <li>倒车灯电压异常处理</li>
+</ul>
+
+<h5 id="刹车灯">刹车灯</h5>
+
+<ul>
+  <li>普通刹车灯</li>
+  <li>紧急制动功能</li>
+  <li>刹车灯优先级</li>
+  <li>刹车灯功能安全</li>
+  <li>刹车灯负载保护</li>
+  <li>刹车灯电压异常处理</li>
+</ul>
+
+<h5 id="日间行车灯">日间行车灯</h5>
+
+<p>1.与近光灯互斥，与位置灯不互斥
+2.发动机启动才有效，RUN档</p>
+
+<h4 id="整车网络休眠唤醒">整车网络休眠唤醒</h4>
+
+<h4 id="后视镜折叠子系统">后视镜折叠子系统</h4>
+
+<h4 id="个性化设置子系统">个性化设置子系统</h4>
+
+<h4 id="内灯子系统">内灯子系统</h4>
+
+<h5 id="节电模式">节电模式</h5>
+
+<ul>
+  <li>
+    <p>上电下点，门开门关，解锁闭锁
+满足任1条件，即会触发节点功能</p>
+
+    <ul>
+      <li>a.	SystemPowerMode变为OFF；</li>
+      <li>b.	‎SystemPowerMode = OFF且PKE、RKE、远程解锁、机械钥匙解锁成功；</li>
+      <li>c.	‎SystemPowerMode = OFF时四门中有任意门状态发生改变；</li>
+      <li>d.	SystemPowerMode变为非OFF</li>
+    </ul>
+  </li>
+</ul>
+
+<h4 id="喇叭子系统">喇叭子系统</h4>
+
+<h4 id="声光报警转向灯交互">声光报警，转向灯交互</h4>
+
+<h4 id="卡死时间及卡死清除">卡死时间及卡死清除</h4>
+
+<h4 id="车辆状态管理子系统">车辆状态管理子系统</h4>
+
+<p>运输模式，涉及配置字</p>
+
+<p>可通过特定操作，或通过输入诊断报文，实现切入/切出运输模式电源分配状态；在运输模式下，部分用电器的电源供给将被断开，确保车辆在长时间搁置状态下不会出现蓄电池馈电的情况。运输模式必须分配配置字来支持运输模式配置的打开或关闭</p>
+
+<h4 id="tpms">TPMS</h4>
+
+<h4 id="车窗控制子系统">车窗控制子系统</h4>
+
+<p>防夹力标准</p>
+
+<p>1.车窗使能：四种电源模式下，解锁闭锁，们开门关条件下看车窗使能情况。</p>
+
+<p>2.PKERKE升窗
+3.信号路由</p>
+
+<h4 id="车辆进入子系统">车辆进入子系统</h4>
+
+<p>中控解闭锁</p>
+
+<p>RKE/PKE解闭锁</p>
+
+<p>机械钥匙解闭锁</p>
+
+<p>熄火自动解锁</p>
+
+<p>P档自动解锁</p>
+
+<p>车速自动闭锁</p>
+
+<p>锁电机热保护</p>
+
+<h4 id="immo防盗认证">IMMO防盗认证</h4>
+
+<h5 id="前级认证">前级认证</h5>
+
+<ul>
+  <li>触发条件</li>
+  <li>认证次数</li>
+  <li>认证算法</li>
+  <li>认证过程</li>
+</ul>
+
+<h5 id="后级认证">后级认证</h5>
+
+<h4 id="车身辅助功能子系统">车身辅助功能子系统</h4>
+
+<h4 id="雨刮与洗涤子系统">雨刮与洗涤子系统</h4>
+
+<p>高速/低俗雨刮模式：RUN档开启。门开门关会打断高速雨刮模式。（进入与退出）</p>
+
+<p>点动挡=低速模式（进入与退出）
+自动雨刮（进入与退出）
+随速雨刮（进入与退出）
+洗涤</p>
+
+<h4 id="远程控制子系统">远程控制子系统</h4>
+
+<h4 id="遥控子系统功能测试用例">遥控子系统功能测试用例</h4>
+
+<h4 id="pmm子系统电源模式管理">PMM子系统（电源模式管理）</h4>
+
+<h4 id="车辆防盗">车辆防盗</h4>
+
+<p>15740</p>
+
+<p>防盗状态转换图</p>
+
+<p>入侵提醒</p>
+
+<p>防盗状态要存入EEROM</p>
+:ET

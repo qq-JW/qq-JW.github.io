@@ -1,4 +1,5 @@
-I"j<h1 id="初识整车can网络">初识整车CAN网络</h1>
+I"3
+<h1 id="初识整车can网络">初识整车CAN网络</h1>
 
 <h3 id="什么是ecu">什么是ECU？</h3>
 
@@ -35,43 +36,4 @@
 <h3 id="总结">总结</h3>
 
 <p>进入汽车行业，了解CAN网络基本知识是电子电器专业的基本功。</p>
-
-<h3 id="缩写表">缩写表</h3>
-
-<table>
-  <thead>
-    <tr>
-      <th>英文缩写</th>
-      <th>英文原意</th>
-      <th>中文原意</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>PT</td>
-      <td> </td>
-      <td> </td>
-    </tr>
-    <tr>
-      <td>CH</td>
-      <td> </td>
-      <td> </td>
-    </tr>
-    <tr>
-      <td>BD</td>
-      <td> </td>
-      <td> </td>
-    </tr>
-    <tr>
-      <td>INFO</td>
-      <td> </td>
-      <td> </td>
-    </tr>
-    <tr>
-      <td>DIAG</td>
-      <td> </td>
-      <td> </td>
-    </tr>
-  </tbody>
-</table>
 :ET
