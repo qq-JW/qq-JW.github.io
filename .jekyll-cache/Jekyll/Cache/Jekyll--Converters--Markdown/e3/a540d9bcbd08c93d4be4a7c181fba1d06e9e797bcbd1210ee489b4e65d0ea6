@@ -1,0 +1,222 @@
+I"=<p>无法转动的方向盘——ESCL</p>
+
+<h1 id="汽车防盗系统二escl电子转向柱锁">汽车防盗系统：（二）ESCL电子转向柱锁</h1>
+
+<p>如果说IMMO发动机防盗系统是偷车贼破解汽车的最后一道关卡，那在这之前，他需要先过2关——车身解锁和转向柱锁解锁。PEPS的功能比较简单， 第三章进行整体介绍，本文主要介绍他的弟弟——ESCL子系统。</p>
+
+<p>曾经的机械结构，如今的电子转向柱锁，都是汽车防盗的第二道关卡。</p>
+
+<p>记录一件有趣的事情，有一次测试中，有辆车打不着火，一名工程师叫了一辆拖车准备把车拖到别处，此时遥控钥匙是好使的但是车辆亏电比较严重，所以他在压根没上电，也无法启动的情况下，打算就任由前车拖着走，刚开始直行还没什么大碍，以为平安无事，但谁知接下来的一段下坡且拐弯的路就尴尬了，ESCL未解锁，不在RUN档刹车也踩不动，前车司机听不到他的呼救，这直接导致前车已经拐弯，但后车因为惯性直冲了出去，虽然速度不快，周围也没有人，但还是把围栏撞歪了才停下车，这不失为一段经典的ESCL逻辑教学课堂。</p>
+
+<p>ESCL子系统，主要有解闭锁两个主要功能点，涉及到ESCL学习和认证两个比较重要的过程。</p>
+
+<p>其功能框图如下：</p>
+
+<p><img src="D:\GitHub\qq-JW.github.io\images\image-20210622235404671.png" alt="image-20210622235404671" /></p>
+
+<p>电器框图如下：</p>
+
+<p><img src="D:\MD\完成\image-20210622235448925.png" alt="image-20210622235448925" /></p>
+
+<h4 id="escl解锁">ESCL解锁</h4>
+
+<p>1． 在电源模式为OFF且非远程启动状态下，按下启动开关，找到合法钥匙，BCM向ESCL发送ESCL解锁请求。</p>
+
+<p>2． 在电源模式为OFF且在远程启动状态下，踩下刹车，按下启动开关，找到合法钥匙BCM向ESCL发送ESCL解锁请求。</p>
+
+<p>3． 当ESCL收到BCM解锁请求，ESCL向BCM发起认证挑战，认证成功后，ESCL执行解锁。</p>
+
+<h5 id="bcm处理">BCM处理：</h5>
+
+<p>前提条件（a）：</p>
+
+<p>a.    BCM是已学习模式</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>触发动作（a</td>
+      <td> </td>
+      <td>b）：</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>a.    在电源模式为OFF且非远程启动状态下，按下启动开关，找到合法钥匙，BCM向ESCL发送ESCL解锁请求</p>
+
+<p>b.    在电源模式为OFF且在远程启动状态下，踩下刹车，按下启动开关，找到合法钥匙BCM向ESCL发送ESCL解锁请求</p>
+
+<p>动作执行（a）：</p>
+
+<p>a.    BCM向ESCL发送ESCL解锁请求</p>
+
+<h5 id="escl处理">ESCL处理：</h5>
+
+<p>前提条件（a）：</p>
+
+<p>a.   ESCL_LockStatus不是UNLock</p>
+
+<p>触发动作（a）：</p>
+
+<p>a.   ESCL收到BCM的解锁请求并认证成功</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>动作执行（a</td>
+      <td>b</td>
+      <td>c）：</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>a. ESCL执行解锁解锁成功发送网络信号ESCL_release=Successed&amp; ESCL_LockStatus=Unlock；</p>
+
+<p>b. ESCL执行解锁解锁失败发送ESCL_Warning_to_IPK= ESCL_Unlock_Failure_Warning；</p>
+
+<p>c. ESCL执行解锁解锁过程中ESCL的锁状态发送实际状态ESCL_LockStatus= （0:latch processing；或1:Locked）</p>
+
+<h4 id="escl闭锁">ESCL闭锁</h4>
+
+<h5 id="bcm处理-1">BCM处理：</h5>
+
+<p>前提条件：a&amp;b&amp;c&amp;d</p>
+
+<p>a.     SystemPowerModeValidity=Valid &amp;SystemPowerMode=OFF</p>
+
+<p>b.     Engine Speed &lt;K_ESCL_Lock_Engine_Speed_Limit,</p>
+
+<p>c.     Engine Speed Status is valid,</p>
+
+<p>d.     ESCL 不是Lock状态</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>触发动作：a</td>
+      <td>b</td>
+      <td>c</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>a.    PKE/RKE/远程/机械钥匙闭锁（车辆外部闭锁）</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>执行输出：a</td>
+      <td>b</td>
+      <td>c</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>a.    BCM发送闭锁请求给ESCL，走认证流程</p>
+
+<h5 id="escl处理-1">ESCL处理：</h5>
+
+<p>前提条件：（a&amp;b&amp;c&amp;d&amp;e&amp;f&amp;g&amp;h）</p>
+
+<p>a.     SystemPowerModeValidity=Valid &amp;SystemPowerMode=OFF</p>
+
+<p>b.     VehicleSpeedStatus=Valid&amp;VehicleSpeed≤2km/h&amp;车速硬线信号≤2km/h</p>
+
+<p>c.     Engine Speed &lt;K_ESCL_Lock_Engine_Speed_Limit,</p>
+
+<p>Engine Speed Status is valid,</p>
+
+<p>d.     ESCL Voltage &gt; K_Minimum_Voltage_Threshold, AND</p>
+
+<p>ESCL_Voltage &lt; K_Maximum_Voltage_Threshold, THEN</p>
+
+<p>e.     K15电位为低电平</p>
+
+<p>f.     PropulsionSystemActive=false</p>
+
+<p>g.     EngineRunActive=false</p>
+
+<p>h.     ESCL 解锁状态</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>触发动作：（a</td>
+      <td>b）</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>a.    收到BCM闭锁请求且认证结果是通过</p>
+
+<p>b.    主驾车门状态变化Close-&gt;Open</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>执行输出：（a</td>
+      <td>b</td>
+      <td>c）</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>a.执行ESCL闭锁控制，闭锁成功发送ESCL_LockStatus=locked</p>
+
+<p>b. 执行ESCL闭锁控制，闭锁失败发送ESCL_LockStatus=0x0: Failed&amp; ESCL_Warning_to_IPK =ESCL_Lock_Failure_Warning</p>
+
+<p>c. 执行ESCL闭锁控制中ESCL的锁状态发送实际状态ESCL_LockStatus= （0:latch processing；或1:UnLocked）</p>
+
+<h4 id="bcm与escl的鉴权过程">BCM与ESCL的鉴权过程</h4>
+
+<p><img src="D:\MD\完成\image-20210622235804072.png" alt="image-20210622235804072" /></p>
+
+<h4 id="escl学习过程">ESCL学习过程</h4>
+
+<p><img src="D:\MD\完成\image-20210622235957772.png" alt="image-20210622235957772" /></p>
+
+<h4 id="缩写表">缩写表</h4>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">‎英文缩写</th>
+      <th style="text-align: center">‎英文原意</th>
+      <th style="text-align: center">‎中文含义</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">‎ECU</td>
+      <td style="text-align: center">‎Electronic Control Unit</td>
+      <td style="text-align: center">‎电子控制单元</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">‎IPK</td>
+      <td style="text-align: center">‎Instrument Pack</td>
+      <td style="text-align: center">‎仪表组合</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">‎TCU</td>
+      <td style="text-align: center">‎Transmission  Control Unit</td>
+      <td style="text-align: center">‎变速器控制单元</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">‎BCM</td>
+      <td style="text-align: center">‎Body Control  Module</td>
+      <td style="text-align: center">‎车身控制模块</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">‎ECM</td>
+      <td style="text-align: center">‎Engine Control  Module</td>
+      <td style="text-align: center">‎发动机控制模块</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">ESCL</td>
+      <td style="text-align: center">Electronic Steering Column  Lock</td>
+      <td style="text-align: center">电子转向柱锁</td>
+    </tr>
+  </tbody>
+</table>
+
+:ET
