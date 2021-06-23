@@ -1,0 +1,47 @@
+I"�<h3 id="什么是autosar网络管理">什么是AutoSAR网络管理？</h3>
+
+<p>AUTOSAR CAN NM 基于分布式直接网络管理策略,每个ECU 的状态只取决于该ECU 周期性发送和接收
+NM PDU。</p>
+
+<h3 id="网络管理报文的规则">网络管理报文的规则？</h3>
+
+<p>网络管理报文格式为11位ID的标准帧，DLC = 8 。
+网络管理报文ID=Base Address + Node ID，范围：0x400 ~ 0x47F。
+网络管理报文与NM PDU的映射关系，如下表所示：</p>
+
+<p>NM PDU 包含3 部分，如下表 所示：
+a) Source Node Identifier : 源节点地址
+b) Control Bit Vector : 控制位向量
+c) User data : 数据域</p>
+
+<p><img src="\images\posts\autosar\image-20210623235900546.png" alt="image-20210623235900546" /></p>
+
+<h3 id="工作模式">工作模式</h3>
+
+<p>AUTOSAR NM 包括3种工作模式：
+a) Network Mode ：网络模式；
+b) Prepare Bus-Sleep Mode ：准备睡眠模式；
+c) Bus-Sleep Mode ： 睡眠模式。</p>
+
+<p><img src="\images\posts\autosar\image-20210624000253970.png" alt="image-20210624000253970" /></p>
+
+<p>状态转换如下：</p>
+
+<p><img src="\images\posts\autosar\image-20210624000404915.png" alt="image-20210624000404915" /></p>
+
+<p>状态转换条件如下：</p>
+<ol>
+  <li>条件1：网络被请求或者接收到NM PDU；</li>
+  <li>条件2：网络被请求或者接收到NM PDU；</li>
+  <li>条件3：网络被请求，且CANNM_REPEAT_MESSAGE_TIME 超时；</li>
+  <li>条件4：网络被释放，且CANNM_REPEAT_MESSAGE_TIME 超时；</li>
+  <li>条件5：Repeat Message Request 或者接收到Repeat Message Request Bit 置1 的NM PDU</li>
+  <li>条件6：Repeat Message Request 或者接收到Repeat Message Request Bit 置1 的NM PDU</li>
+  <li>条件7：网络被释放；</li>
+  <li>条件8：网络被请求；</li>
+  <li>条件9：CANNM_TIMEOUT_TIME 超时；</li>
+  <li>条件10：CANNM_WAIT_BUS_SLEEP_TIME 超时；</li>
+  <li>条件11：常电打开；</li>
+  <li>条件12：常电关闭；</li>
+</ol>
+:ET
